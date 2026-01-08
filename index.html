@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Pharmacy Pro - Quản lý nhà thuốc</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
+        }
+        .icon-fill { font-variation-settings: 'FILL' 1; }
+        
+        /* Fade animation for page transitions */
+        .page-transition {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] overflow-hidden">
+    <div class="flex h-screen w-full">
+        <!-- SIDEBAR -->
+        <aside id="sidebar" class="hidden lg:flex w-72 flex-col border-r border-[#dbe0e6] bg-white h-full shrink-0 transition-all duration-300 overflow-y-auto z-20">
+            <div class="flex h-full flex-col p-4">
+                <!-- Logo -->
+                <div class="flex gap-3 items-center px-2 py-3 mb-4 sticky top-0 bg-white z-10">
+                    <div class="bg-primary/10 flex items-center justify-center rounded-lg size-10 shrink-0">
+                        <span class="material-symbols-outlined text-primary icon-fill">local_pharmacy</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <h1 class="text-[#111418] text-base font-bold leading-normal">Pharmacy Pro</h1>
+                        <p class="text-[#617589] text-xs font-normal leading-normal">Quản lý nhà thuốc</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Menu -->
+                <nav id="sidebar-nav" class="flex flex-col gap-1 flex-1">
+                    <!-- Dashboard -->
+                    <a href="#dashboard" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group mb-2">
+                        <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">dashboard</span>
+                        <p class="text-sm font-semibold leading-normal">Dashboard</p>
+                    </a>
+
+                    <!-- Quản lý thuốc -->
+                    <div class="mt-2">
+                        <div class="flex items-center gap-3 px-3 py-2 text-[#617589]">
+                            <span class="text-xs font-bold uppercase tracking-wider">Quản lý thuốc</span>
+                        </div>
+                        <a href="#ds-thuoc" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">medication</span>
+                            <p class="text-sm font-medium leading-normal">Danh sách thuốc</p>
+                        </a>
+                        <a href="#tao-phieu-nhap-kho" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">add_box</span>
+                            <p class="text-sm font-medium leading-normal">Nhập thuốc</p>
+                        </a>
+                        <a href="#ban-thuoc-pos" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">point_of_sale</span>
+                            <p class="text-sm font-medium leading-normal">Xuất / Bán thuốc</p>
+                        </a>
+                        <a href="#thuoc-sap-het-han-sd" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">alarm_off</span>
+                            <p class="text-sm font-medium leading-normal">Thuốc sắp hết hạn</p>
+                        </a>
+                        <a href="#thuoc-het-hang" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">production_quantity_limits</span>
+                            <p class="text-sm font-medium leading-normal">Thuốc sắp hết hàng</p>
+                        </a>
+                    </div>
+
+                    <!-- Hóa đơn - Giao dịch -->
+                    <div class="mt-4">
+                        <div class="flex items-center gap-3 px-3 py-2 text-[#617589]">
+                            <span class="text-xs font-bold uppercase tracking-wider">Hóa đơn - Giao dịch</span>
+                        </div>
+                        <a href="#hoa-don-ban-le" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">receipt_long</span>
+                            <p class="text-sm font-medium leading-normal">Hóa đơn bán lẻ</p>
+                        </a>
+                        <a href="#hoa-don-nhap-hang" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">inventory</span>
+                            <p class="text-sm font-medium leading-normal">Hóa đơn nhập hàng</p>
+                        </a>
+                        <a href="#tra-hang-hoan-tien" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">keyboard_return</span>
+                            <p class="text-sm font-medium leading-normal">Trả hàng - Hoàn tiền</p>
+                        </a>
+                    </div>
+
+                    <!-- Nhà cung cấp -->
+                    <div class="mt-4">
+                        <div class="flex items-center gap-3 px-3 py-2 text-[#617589]">
+                            <span class="text-xs font-bold uppercase tracking-wider">Nhà cung cấp</span>
+                        </div>
+                        <a href="#ds-nha-cung-cap" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">local_shipping</span>
+                            <p class="text-sm font-medium leading-normal">Danh sách nhà cung cấp</p>
+                        </a>
+                        <a href="#lich-su-nhap-hang" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">history</span>
+                            <p class="text-sm font-medium leading-normal">Lịch sử nhập hàng</p>
+                        </a>
+                    </div>
+
+                    <!-- Khách hàng -->
+                    <div class="mt-4">
+                        <div class="flex items-center gap-3 px-3 py-2 text-[#617589]">
+                            <span class="text-xs font-bold uppercase tracking-wider">Khách hàng</span>
+                        </div>
+                        <a href="#ds-khach-hang" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">groups</span>
+                            <p class="text-sm font-medium leading-normal">Danh sách khách hàng</p>
+                        </a>
+                        <a href="#lich-su-mua-hang" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">receipt</span>
+                            <p class="text-sm font-medium leading-normal">Lịch sử mua thuốc</p>
+                        </a>
+                    </div>
+
+                    <!-- Nhân viên & phân quyền -->
+                    <div class="mt-4">
+                        <div class="flex items-center gap-3 px-3 py-2 text-[#617589]">
+                            <span class="text-xs font-bold uppercase tracking-wider">Nhân viên & phân quyền</span>
+                        </div>
+                        <a href="#ds-nhan-vien" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">badge</span>
+                            <p class="text-sm font-medium leading-normal">Danh sách nhân viên</p>
+                        </a>
+                        <a href="#phan-quyen" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">manage_accounts</span>
+                            <p class="text-sm font-medium leading-normal">Phân quyền sử dụng</p>
+                        </a>
+                    </div>
+
+                    <!-- Báo cáo - Thống kê -->
+                    <div class="mt-4">
+                        <div class="flex items-center gap-3 px-3 py-2 text-[#617589]">
+                            <span class="text-xs font-bold uppercase tracking-wider">Báo cáo - Thống kê</span>
+                        </div>
+                        <a href="#bao-cao-doanh-thu" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">bar_chart</span>
+                            <p class="text-sm font-medium leading-normal">Doanh thu</p>
+                        </a>
+                        <a href="#bao-cao-ton-kho" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">warehouse</span>
+                            <p class="text-sm font-medium leading-normal">Tồn kho</p>
+                        </a>
+                        <a href="#bao-cao-han-su-dung" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">event_busy</span>
+                            <p class="text-sm font-medium leading-normal">Hạn sử dụng</p>
+                        </a>
+                        <a href="#bao-cao-thuoc-ban-chay" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">trending_up</span>
+                            <p class="text-sm font-medium leading-normal">Thuốc bán chạy</p>
+                        </a>
+                        <a href="#bao-cao-thuoc-ton-lau" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">hourglass_empty</span>
+                            <p class="text-sm font-medium leading-normal">Thuốc tồn lâu</p>
+                        </a>
+                    </div>
+
+                    <!-- Cài đặt hệ thống -->
+                    <div class="mt-4 pb-4">
+                        <div class="flex items-center gap-3 px-3 py-2 text-[#617589]">
+                            <span class="text-xs font-bold uppercase tracking-wider">Cài đặt hệ thống</span>
+                        </div>
+                        <a href="#thong-tin-hieu-thuoc" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">store</span>
+                            <p class="text-sm font-medium leading-normal">Thông tin hiệu thuốc</p>
+                        </a>
+                        <a href="#logo-mauhoadon" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">branding_watermark</span>
+                            <p class="text-sm font-medium leading-normal">Logo & Mẫu hóa đơn</p>
+                        </a>
+                        <a href="#don-vi-tinh" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">straighten</span>
+                            <p class="text-sm font-medium leading-normal">Đơn vị tính</p>
+                        </a>
+                        <a href="#quan-ly-du-lieu" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] text-[#111418] transition-colors group">
+                            <span class="material-symbols-outlined text-[#617589] group-hover:text-primary transition-colors">manage_accounts</span>
+                            <p class="text-sm font-medium leading-normal">Quản lý dữ liệu</p>
+                        </a>
+                    </div>
+                </nav>
+
+                <!-- User Profile -->
+                <div class="sticky bottom-0 bg-white pt-2 border-t border-[#f0f2f4]">
+                    <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-[#f0f2f4] transition-colors cursor-pointer group">
+                        <div class="size-10 rounded-full bg-blue-100 flex items-center justify-center text-primary font-bold shrink-0">
+                            NA
+                        </div>
+                        <div class="flex flex-col flex-1 min-w-0">
+                            <p class="text-[#111418] text-sm font-bold truncate">DS. Nguyễn Văn A</p>
+                            <p class="text-[#617589] text-xs font-medium truncate">Admin</p>
+                        </div>
+                        <button class="flex items-center justify-center size-8 rounded-full hover:bg-red-50 text-[#617589] hover:text-red-600 transition-colors" title="Đăng xuất">
+                            <span class="material-symbols-outlined text-xl">logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="flex flex-1 flex-col h-full overflow-hidden relative">
+            <!-- Header -->
+            <header class="flex items-center justify-between border-b border-[#dbe0e6] bg-white px-6 py-3 shrink-0 z-10">
+                <div class="flex items-center gap-8 flex-1">
+                    <div class="flex items-center gap-2">
+                        <button class="lg:hidden p-2 -ml-2 text-[#617589]">
+                            <span class="material-symbols-outlined">menu</span>
+                        </button>
+                        <h2 id="page-title" class="text-[#111418] text-xl font-bold leading-tight tracking-[-0.015em]">Dashboard</h2>
+                    </div>
+                    <div class="hidden md:flex max-w-md w-full">
+                        <div class="flex w-full items-center rounded-lg bg-[#f0f2f4] px-3 h-10 border border-transparent focus-within:border-primary/50 focus-within:bg-white transition-all">
+                            <span class="material-symbols-outlined text-[#617589]">search</span>
+                            <input class="w-full bg-transparent border-none text-[#111418] placeholder:text-[#617589] focus:ring-0 text-sm font-normal ml-2" placeholder="Tìm kiếm thuốc, hóa đơn, khách hàng..."/>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="relative flex items-center justify-center size-10 rounded-full hover:bg-[#f0f2f4] text-[#111418] transition-colors">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dynamic Content Container -->
+            <main id="main-content" class="flex-1 overflow-y-auto bg-background-light p-4 md:p-6">
+                <!-- Content will be loaded here dynamically -->
+            </main>
+        </div>
+    </div>
+
+    <!-- Load Scripts -->
+    <script src="assets/js/database.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
